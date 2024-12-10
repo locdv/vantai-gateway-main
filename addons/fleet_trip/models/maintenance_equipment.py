@@ -29,7 +29,7 @@ class MaintenanceEquipment(models.Model):
             self.district_id = self.location_id.district_id.id
             self.ward_id = self.location_id.ward_id.id
             self.state_id = self.location_id.state_id.id
-            self.address_start = self.location_id.note
+            self.address_start = self.location_id.note 
             
     def name_get(self):
         self.browse(self.ids).read(['name', 'license_plate'])
