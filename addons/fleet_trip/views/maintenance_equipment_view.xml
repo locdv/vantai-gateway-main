@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_equipment_view_form_inherited" model="ir.ui.view">
+        <field name="name">maintenance.equipment.view.inherited</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <field name="qr_code" invisible="1"/>
+                <field name="qr_code_img" widget="image" class="oe_avatar"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="before">
+                <field name="license_plate"/>
+                <field name="vehicle_id"/>
+                <field name="department_belong_id"/>
+                <field name="location_id"/>
+                <!-- <div class="o_address_format" attrs="{'invisible': [('location_id','!=',False)]}"> -->
+                <div class="o_address_format" >
+                    <field name="state_id" class="o_address_state" placeholder="Tỉnh/TP" readonly="True" force_save="1" />
+                    <field name="district_id" placeholder="Quận/Huyện" class="o_address_zip" readonly="True" force_save="1" />
+                    <field name="ward_id" placeholder="Xã/Phường" class="o_address_city" readonly="True" force_save="1" />
+                    <field name="address_start" placeholder="Địa chỉ" readonly="True" force_save="1" />
+                </div>
+                <field name="fuel_id"/>
+                <field name="number_seat"/>
+                <field name="quota"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_equipment_view_tree_inherited" model="ir.ui.view">
+        <field name="name">maintenance.equipment.view.inherited</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="license_plate"/>
+                <field name="vehicle_id"/>
+                <field name="department_belong_id"/>
+                <field name="fuel_id"/>
+                <field name="number_seat"/>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="hr_equipment_view_kanban_inherited" model="ir.ui.view">
+        <field name="name">maintenance.equipment.kanban.view.inherited</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="replace">
+                <div class="o_kanban_record_body">
+                    <span>
+                        <strong>Biển số: </strong>
+                        <span t-if="record.license_plate.raw_value"><field name="license_plate"/></span>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_request_form_view_inherited" model="ir.ui.view">
+        <field name="name">maintenance_request_form.view.inherited</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='maintenance_type']" position="after">
+                <field name="odometer_maintenance"/>
+                <field name="date_process"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

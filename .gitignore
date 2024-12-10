@@ -1,0 +1,7 @@
+etc/odoo-server.log
+postgresql/
+etc/addons/
+etc/sessions/
+etc/filestore/
+__pycache__/
+.vscode/settings.json

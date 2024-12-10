@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- <record id="fleet_location_01" model="fleet.location">
+            <field name="name">Nhà máy 1</field>
+            <field name="code">1</field>
+        </record> -->
+
+        <!-- <record id="fleet_location_02" model="fleet.location">
+            <field name="name">Nhà máy 2</field>
+            <field name="code">2</field>
+        </record>
+
+        <record id="fleet_location_03" model="fleet.location">
+            <field name="name">Nhà máy 3</field>
+            <field name="code">3</field>
+        </record> -->
+
+    </data>
+</odoo>

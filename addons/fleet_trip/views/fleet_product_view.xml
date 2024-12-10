@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fleet_product_tree_view" model="ir.ui.view">
+            <field name="name">fleet.product.tree.view</field>
+            <field name="model">fleet.product</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="fleet_product_tree_act_window" model="ir.actions.act_window">
+            <field name="name">Danh sách mặt hàng</field>
+            <field name="res_model">fleet.product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="fleet_product_menu"
+                  name="Danh sách mặt hàng"
+                  parent="fleet_config_menu"
+                  action="fleet_product_tree_act_window"
+                  sequence="70"/>
+
+    </data>
+</odoo>

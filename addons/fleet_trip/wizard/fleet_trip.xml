@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_fleet_trip_wizard_form" model="ir.ui.view">
+        <field name="name">fleet.trip.wizard.form</field>
+        <field name="model">fleet.trip.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Bảng tổng hợp">
+                <sheet>
+                    <group string="Ngày báo cáo">
+                        <group>
+                            <field name="date_from" required="1"/>
+                        </group>
+                        <group>
+                            <field name="date_to" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="generate_trip_report" string="Xem báo cáo" type="object" class="btn-primary"/>
+                        or
+                        <button string="Hủy" class="btn-default" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_fleet_trip_wizard" model="ir.actions.act_window">
+        <field name="name">Bảng tổng hợp</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fleet.trip.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+<!-- 
+    <menuitem name ="Bảng tổng hợp" id='menu_action_fleet_trip_report' parent="fleet_trip_report"
+              action="action_fleet_trip_wizard" sequence="50"/> -->
+
+    <record id="fleet_trip_tree_report_view" model="ir.ui.view">
+        <field name="name">fleet.trip.report.tree.view</field>
+        <field name="model">fleet.trip.report</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="location_id"/>
+                <field name="location_dest_id"/>
+                <field name="project_id"/>
+                <field name="schedule_date_day"/>
+                <field name="schedule_date_month"/>
+                <field name="schedule_date_year"/>
+                <field name="license_plate"/>
+                <field name="eating_fee"/>
+                <field name="law_money"/>
+                <field name="road_tiket_fee"/>
+                <field name="incurred_fee"/>
+                <field name="note"/>
+                <field name="fee_total_without_invoice"/>
+                <field name="fee_invoice"/>
+                <field name="fee_oil"/>
+                <field name="fee_machine"/>
+                <field name="fee_total" sum="Tổng cộng"/>
+                <field name="company_id"/>
+                <field name="trip_length"/>
+                <field name="trip_count"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

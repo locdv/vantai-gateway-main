@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="fleet_car_tree_view" model="ir.ui.view">
+        <field name="name">fleet.car.tree.view</field>
+        <field name="model">fleet.car</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="license_plate"/>
+                <field name="acquisition_date"/>
+                <field name="vin_sn"/>
+                <field name="seats"/>
+                <field name="model_year"/>
+                <field name="color"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_car_form_view" model="ir.ui.view">
+        <field name="name">fleet.car.form.view</field>
+        <field name="model">fleet.car</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="license_plate"/>
+                            <field name="acquisition_date"/>
+                            <field name="vin_sn"/>
+                        </group>
+                        <group>
+                            <field name="seats"/>
+                            <field name="model_year"/>
+                            <field name="color"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="fleet_trip" string="Danh sách hành trình">
+                            <field name="fleet_trip_ids" nolabel="1">
+                                <tree>
+                                    <field name="location_id"/>
+                                    <field name="location_dest_id"/>
+                                    <field name="equipment_id"/>
+                                    <field name="odometer_start"/>
+                                    <field name="odometer_dest"/>
+                                    <field name="odometer_end"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_car_action" model="ir.actions.act_window">
+        <field name="name">Xe</field>
+        <field name="res_model">fleet.car</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="fleet_car_menu"
+              name="Danh sách xe"
+              parent="fleet_config_menu"
+              action="fleet_car_action"
+              sequence="10"/>
+</odoo>

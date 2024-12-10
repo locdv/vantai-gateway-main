@@ -1,0 +1,25 @@
+.o_address_state {
+    /* Add your custom styles here */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.o_address_zip {
+    /* Add your custom styles here */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.o_address_city {
+    /* Add your custom styles here */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.o_address_format {
+    /* Add your custom styles here */
+    margin: 10px 0;
+}

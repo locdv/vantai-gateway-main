@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="fleet_trip_tree_view" model="ir.ui.view">
+        <field name="name">fleet.trip.tree.view</field>
+        <field name="model">fleet.trip</field>
+        <field name="type">tree</field>
+        
+        <field name="arch" type="xml">
+            <tree>
+                <field name="create_uid" />
+                <field name="license_plate" />
+                <field name="department_id" />
+                <field name="employee_id" />
+                <field name="category_plan_name" />
+                <field name="department_plan_id" />
+                <field name="schedule_date" />
+                <!-- <field name="vehicle_id"/> -->
+                <field name="fuel_id"/>
+                <field name="fleet_product_id" />
+                <field name="number_trips" />
+                <field name="number_people" />
+                <field name="location_id" string="Tên điểm đi" />
+                <field name="location_dest_id" string="Tên điểm đến" />
+                <field name="location_start_district_state" string="Địa chỉ điểm đi" />
+                <field name="location_dest_district_state" string="Địa chỉ điểm đến" />
+                <!-- <button name="do_approve" type="object" attrs="{'invisible': [('is_approved','=',True)]}" class="fa fa-check-square" groups="fleet_trip.group_fleet_manager" />
+                <button name="do_reject" type="object" attrs="{'invisible': [('is_approved','=',True)]}" class="fa fa-window-close" groups="fleet_trip.group_fleet_manager" /> -->
+                <!-- <field name="eating_fee" />
+                <field name="company_name" string="Xác nhận" /> -->
+                <field name="fee_total" sum="Tổng" />
+                <field name="description" string="Nhiệm vụ"/>
+                <field name="odometer_start" string="CMT đi"/>
+                <field name="odometer_dest" string="CMT đến"/>
+                <field name="odometer_end" string="Chiều dài hành trình" />
+                <field name="start_hour" />
+                <field name="end_hour" />
+                <field name="location_compute_name" string="Địa chỉ điểm đi" />
+                <field name="location_dest_compute_name" string="Địa chỉ điểm đến" />
+                <field name="is_approved" invisible="1" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_trip_form_view" model="ir.ui.view">
+        <field name="name">fleet.trip.form.view</field>
+        <field name="model">fleet.trip</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="do_plan_trip" string="Gửi Dự trù" class="oe_highlight" attrs="{'invisible': [('state','!=','0_plan')]}" />
+                    <button type="object" name="do_create_command_trip" string="Gửi lệnh" class="oe_highlight" attrs="{'invisible': [('state','!=','1_draft')]}" />
+                    <button type="object" name="do_start_trip" string="Viết lệnh" class="oe_highlight" attrs="{'invisible': [('state','!=','2_command')]}" />
+                    <button type="object" name="do_end_trip" string="Kết thúc" class="oe_highlight" attrs="{'invisible': [('state','!=','2_confirm')]}" />
+                    <field name="state" widget="statusbar" statusbar_visible="0_plan,1_draft,2_command,2_confirm,3_done" />
+                    <button name="action_download_template" type="object" string="Tải dự trù" class="btn-primary" attrs="{'invisible': [('state','!=','1_draft')]}" />
+                    <button name="action_download_command_template" type="object" string="Tải Lệnh điều xe" class="btn-primary" attrs="{'invisible': [('state','!=','2_command'), ('state','!=','2_confirm')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="fleet_code" attrs="{'invisible': [('state','!=','0_plan')]}" />
+                            <field name="fleet_command_code" attrs="{'invisible': [('state','!=','1_draft')]}" />
+                        </group>
+                        <group>
+                            <field name="schedule_date"/>
+                        </group>
+                        <group attrs="{'invisible': [('state','=','0_plan')]}">
+                            <field name="fleet_code" string="Căn cứ: Dự trù phương tiện số:"/>
+                            <field name="equipment_id"  string="Điều phương tiện"  options="{'no_create': 1, 'no_edit': 1}" />
+                            <field name="license_plate"/>
+                            <field name="model_id" string="Nhãn hiệu"/>
+                        </group>
+                        <group>
+                            <!-- <field name="quota"/> -->
+                            <field name="department_plan_id" />
+                            <field name="number_trips" />
+                            <!-- <field name="fuel_id"/> -->
+                            <!-- <field name="fleet_product_id" /> -->
+                            <field name="category_plan" />
+                            <field name="description" string="Nội dung nhiệm vụ" placeholder="Nhiệm vụ hành trình" />
+                            <!-- <field name="fleet_preventive" /> -->
+                        </group>
+
+                        <!-- <group> -->
+                            <!-- <field name="location_id" string="Chọn điểm đầu" />
+                            <label for="ward_id" string="Nơi xuất phát" /> -->
+                            
+                            <!-- <div class="o_address_format" attrs="{'invisible': [('location_id','!=',False)]}"> -->
+                            <!-- <div class="o_address_format" >
+                                <field name="state_id" class="o_address_state" placeholder="Tỉnh/TP" readonly="True" force_save="1" />
+                                <field name="district_id" placeholder="Quận/Huyện" class="o_address_zip" readonly="True" force_save="1" />
+                                <field name="ward_id" placeholder="Xã/Phường" class="o_address_city" readonly="True" force_save="1" />
+                                <field name="address_start" placeholder="Địa chỉ" readonly="True" force_save="1" />
+                            </div> -->
+
+                            <!-- <field name="location_dest_id" string="Chọn điểm cuối" />
+                            <label for="ward_dest_id" string="Nơi đến" /> -->
+                            <!-- <div class="o_address_format" attrs="{'invisible': [('location_dest_id','!=',False)]}"> -->
+                            <!-- <div class="o_address_format" >
+                                <field name="state_dest_id" class="o_address_state" placeholder="Tỉnh/TP" readonly="True" force_save="1" />
+                                <field name="district_dest_id" placeholder="Quận/Huyện" class="o_address_zip" readonly="True" force_save="1" />
+                                <field name="ward_dest_id" placeholder="Xã/Phường" class="o_address_city" readonly="True" force_save="1" />
+                                <field name="address_end" placeholder="Địa chỉ" readonly="True" force_save="1" />
+                            </div> -->
+                        <!-- </group> -->
+                        <group>
+                            <!-- <field name="odometer_start" /> -->
+                            <field name="time_day_compute" string="Thời gian" />
+                            <field name="start_date" string="Từ" />
+
+                            <!-- <field name="odometer_dest" />
+                            <field name="odometer_end" /> -->
+                            <field name="end_date" string="Đến"/>
+                        <!-- </group>
+                        <group> -->
+                            <field name="location_id" string="Địa điểm đón xe" />
+                            <div class="o_address_format" attrs="{'invisible': [('location_id','!=',False)]}">
+                            <!-- <div class="o_address_format" > -->
+                                <field name="state_id" class="o_address_state" placeholder="Tỉnh/TP" readonly="True" force_save="1" />
+                                <field name="district_id" placeholder="Quận/Huyện" class="o_address_zip" readonly="True" force_save="1" />
+                                <field name="ward_id" placeholder="Xã/Phường" class="o_address_city" readonly="True" force_save="1" />
+                                <field name="address_start" placeholder="Địa chỉ" readonly="True" force_save="1" />
+                                
+                            
+                            <!-- </div> -->
+                            </div>
+                            <field name="distance_plan"  string="Km đi về"/>
+                            <field name="location_dest_id" string="Nơi đến" />
+                            <!-- <label for="ward_dest_id" string="Nơi đến" /> -->
+                            <div attrs="{'invisible': [('location_dest_id','!=',False)]}">
+                                <!-- <div class="o_address_format" > -->
+                                    <field name="state_dest_id" placeholder="Tỉnh/TP" readonly="True" force_save="1" />
+                                    <field name="district_dest_id" placeholder="Quận/Huyện" readonly="True" force_save="1" />
+                                    <field name="ward_dest_id" placeholder="Xã/Phường"  readonly="True" force_save="1" />
+                                    <field name="address_end" placeholder="Địa chỉ" readonly="True" force_save="1" />
+                                <!-- </div> -->
+                            </div>
+                        </group>
+                        <group>
+                            <field name="route"  string="Cung đường"/>
+                            <field name="employee_ids" string="Người đi" type="xml">
+                                <tree>
+                                    <field name="name" string="Cán bộ"/>
+                                    <!-- <field name="city"/>
+                                    <field name="state"/> -->
+                                </tree>
+                            </field>
+                            <field name="number_people" />
+                        </group>
+
+                        <group>
+                            
+                            <field name="product_weigh" />
+                            <!-- <field name="employee_id" string="Tài xế" /> -->
+                        </group>
+                        <group>
+                            <field name="employee_lead_id" />
+                            <field name="rank_id" string="Cấp bậc"/>
+                            <field name="job_id" string="Chức vụ"/>
+                            <!-- <field name="number_picks" /> -->
+                        </group>
+                        <group>
+                            <field name="employee_plan_id"  attrs="{'invisible': [('state','=','0_plan')]}"/>
+                            <field name="employee_command_id"  attrs="{'invisible': [('state','=','0_plan')]}" />
+                        </group>
+                        <group>
+                            
+                            <!-- <field name="company_name" /> -->
+                            <field name="department_id" string='Phòng ban quản lý PT'/>
+                            
+                            <!-- <field name="department_belong_id" /> -->
+                        </group>
+                    </group>
+                    <group>
+                        <!-- <group>
+                            <field name="eating_fee" />
+                            <field name="law_money" />
+                            <field name="road_tiket_fee" />
+                            <field name="fee_total" />
+                        </group>
+                        <group>
+                            <field name="incurred_fee" />
+                            <field name="description" />
+                            <field name="incurred_note" />
+                            <field name="incurred_fee_2" />
+                            <field name="incurred_note_2" />
+                        </group> -->
+                        <field name="country_id" invisible="1" />
+                        <field name="employee_approved_id"/>
+                        <field name="note" nolabel="1" placeholder="Ghi chú hành trình" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_trip_search_view" model="ir.ui.view">
+        <field name="name">fleet.trip.view.search</field>
+        <field name="model">fleet.trip</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm">
+                <field name="delivery_id" />
+                <field name="vehicle_id" />
+                <!--                <field name="location_id"/>-->
+                <!--                <field name="location_dest_id"/>-->
+                <separator />
+                <filter name="today" string="Hôm nay" separator="1" domain="[('schedule_date','&lt;=', (datetime.date.today()).strftime('%Y-%m-%d')),
+                        ('schedule_date','&gt;=',(datetime.date.today()).strftime('%Y-%m-%d'))]" />
+                <filter string="Tuần này" name="week" domain="[('schedule_date','&lt;=', (context_today() + relativedelta(weeks=0,day=7, weekday=-1)).strftime('%Y-%m-%d')),
+                        ('schedule_date','&gt;=',(context_today() - relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d'))]" />
+                <filter string="Tuần trước" name="last_week" domain="[('schedule_date', '&gt;=', ((context_today()+relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d'))),
+                        ('schedule_date', '&lt;=', ((context_today()+relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d')))]" />
+                <filter name="month" string="Tháng này" domain="['&amp;',('schedule_date','&gt;=',(context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),
+                        ('schedule_date','&lt;=',(context_today()+relativedelta(months=1,day=1,days=-1)).strftime('%Y-%m-%d'))]" />
+                <filter name="prev_month" string="Tháng trước" domain="[('schedule_date','&gt;=',(context_today()-relativedelta(months=1)).strftime('%Y-%m-01')),
+                        ('schedule_date','&lt;',context_today().strftime('%Y-%m-01'))]" />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter string="Ngày thực hiện" name="group_schedule_date" context="{'group_by': 'schedule_date:day'}" />
+                    <filter string="Trạng thái chuyến đi" name="group_state" context="{'group_by': 'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="fleet_trip_action" model="ir.actions.act_window">
+        <field name="name">Dự trù phương tiện</field>
+        <field name="res_model">fleet.trip</field>
+        <field name="type">ir.actions.act_window</field>
+        <!-- <field name="domain_force">[('state', '=', '1_draft')]</field> -->
+        <field name="domain">['|', ('state', '=', '1_draft'), ('state', '=', '0_plan')]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="fleet_trip_menu" name="Dự trù xe" parent="fleet_root_menu" action="fleet_trip_action" sequence="5" />
+
+    <record id="fleet_trip_command_action" model="ir.actions.act_window">
+        <field name="name">Lệnh điều phương tiện</field>
+        <field name="res_model">fleet.trip</field>
+        <field name="type">ir.actions.act_window</field>
+        <!-- <field name="domain_force">[('state', '=', '1_draft')]</field> -->
+        <field name="domain">[('state', '!=', '1_draft'), ('state', '!=', '0_plan')]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="fleet_command_menu" name="Lệnh điều phương tiện" parent="fleet_root_menu" action="fleet_trip_command_action" sequence="6" />
+</odoo>

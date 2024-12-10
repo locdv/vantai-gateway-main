@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_company_form_streep_inherit" model="ir.ui.view">
+        <field name="name">res.company.form.view.inherit.kimlong</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="priority">40</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="token_register_account"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_inherit_form" model="ir.ui.view">
+        <field name="name">res.users.inherit.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='signature']" position="after">
+                <group>
+                    <label for="is_department_manager" string="Là một quản lý phòng ban: "/>
+                    <field name="is_department_manager" string="Là một quản lý phòng ban"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_project_tree_view" model="ir.ui.view">
+        <field name="name">fleet.project.tree.view</field>
+        <field name="model">fleet.project</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_project_action" model="ir.actions.act_window">
+        <field name="name">Dự án</field>
+        <field name="res_model">fleet.project</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="fleet_project_action_menu"
+              name="Dự án"
+              parent="fleet_config_menu"
+              action="fleet_project_action"
+              sequence="40"/>
+
+    <record id="fleet_category_tree_view" model="ir.ui.view">
+        <field name="name">fleet.category.tree.view</field>
+        <field name="model">fleet.category</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_category_action" model="ir.actions.act_window">
+        <field name="name">Hạng mục</field>
+        <field name="res_model">fleet.category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="fleet_category_action_menu"
+              name="Hạng mục"
+              parent="fleet_config_menu"
+              action="fleet_category_action"
+              sequence="50"/>
+    
+    <record id="view_department_form_inherited" model="ir.ui.view">
+        <field name="name">hr.department.view.inherited</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="acronym"/>
+                <field name="is_manage_vehicle"/>
+                <field name="equipment_ids" type="xml">
+                    <tree>
+                        <field name="name" string="Xe"/>
+                        <!-- <field name="city"/>
+                        <field name="state"/> -->
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_employee_form_inherited" model="ir.ui.view">
+        <field name="name">hr.employee.view.inherited</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="user_id"/>
+                <field name="is_department_manager"/>
+                <!-- <field name="contract_date"/> -->
+                
+            </xpath>
+            <!-- <xpath expr="//page[last()]" position="after">
+                <page string="Thông tin thu nhập" name="payroll_ids">
+                    <field name="payroll_ids" nolabel="1">
+                        <tree create="0" edit="0" delete="0">
+                            <field name="month"/>
+                            <field name="year"/>
+                            <field name="name"/>
+                            <field name="employee_id"/>
+                            <field name="payroll_amount"/>
+                            <field name="bonus_amount"/>
+                            <field name="total_amount"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath> -->
+            <xpath expr="//page[position()=1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//page[position()=2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[position()=3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='pin']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='category_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <!--                 <field name="equipment_id"/>-->
+                <!-- <field name="coefficients_salary"/> -->
+                <field name="level"/>
+                <!-- <field name="position"/> -->
+                <field name="job_id"/>
+                <field name="rank_id"/>
+                <field name="sign_image"/>
+                <!-- <field name="other_info"/> -->
+            </xpath>
+        </field>
+    </record>
+    
+
+    <record id="view_fleet_route_form" model="ir.ui.view">
+        <field name="name">fleet.route.form</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <form string="Fleet Route">
+                <group>
+                    <field name="name"/>
+                    <field name="start_location_id"/>
+                    <field name="end_location_id"/>
+                    <field name="description"/>
+                    <field name="note"/>
+                    <field name="estimated_km"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_fleet_route_tree" model="ir.ui.view">
+        <field name="name">fleet.route.tree</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <tree string="Fleet Routes">
+                <field name="name"/>
+                <field name="start_location_id"/>
+                <field name="end_location_id"/>
+                <field name="estimated_km"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <menuitem id="menu_fleet_route_root" name="Fleet Routes" parent="fleet.menu_root" sequence="20"/> -->
+
+    <!-- <menuitem id="menu_fleet_route" name="Routes" parent="menu_fleet_route_root" action="action_fleet_route"/> -->
+    
+    <record id="fleet_route_action" model="ir.actions.act_window">
+        <field name="name">Danh sách cung đường</field>
+        <field name="res_model">fleet.route</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="fleet_route_menu"
+              name="Danh sách cung đường"
+              parent="fleet_config_menu"
+              action="fleet_route_action"
+              sequence="70"/>
+
+    <record id="fleet_location_tree_view" model="ir.ui.view">
+        <field name="name">fleet.location.tree.view</field>
+        <field name="model">fleet.location</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="ward_id"/>
+                <field name="district_id"/>
+                <field name="state_id"/>
+                <field name="note"/>
+                <field name="country_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_location_report_form_view" model="ir.ui.view">
+        <field name="name">fleet.location.form.view</field>
+        <field name="model">fleet.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="state_id"/>
+                            <field name="district_id"/>
+                            <separator/>
+                            <field name="ward_id"/>
+                            <field name="note"/>
+                        </group>
+                        <group>
+                            <field name="country_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_location_action" model="ir.actions.act_window">
+        <field name="name">Danh sách vị trí</field>
+        <field name="res_model">fleet.location</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="fleet_location_menu"
+              name="Danh sách vị trí"
+              parent="fleet_config_menu"
+              action="fleet_location_action"
+              sequence="60"/>
+
+
+    <record id="hr_employee_payroll_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.payroll.tree.view</field>
+        <field name="model">hr.employee.payroll</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="month"/>
+                <field name="year"/>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="payroll_amount"/>
+                <field name="bonus_amount"/>
+                <field name="total_amount"/>
+            </tree>
+        </field>
+    </record>
+    <record id="hr_employee_payroll_search_view" model="ir.ui.view">
+        <field name="name">hr.employee.payroll.view.search</field>
+        <field name="model">hr.employee.payroll</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm">
+                <field name="month"/>
+                <field name="year"/>
+                <field name="employee_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Theo tháng" name="group_by_month" context="{'group_by': 'month'}"/>
+                    <filter string="Theo năm" name="group_by_year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- <record id="hr_employee_payroll_action" model="ir.actions.act_window">
+        <field name="name">Bảng lương</field>
+        <field name="res_model">hr.employee.payroll</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field> -->
+        <!--        <field name="context">{'search_default_group_by_month':True}</field>-->
+    <!-- </record>
+
+    <menuitem id="hr_employee_payroll_menu"
+              name="Bảng lương"
+              parent="hr.menu_hr_employee_payroll"
+              action="hr_employee_payroll_action"
+              sequence="60"/> -->
+
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fleet_trip_cost_generate_form_view" model="ir.ui.view">
+            <field name="name">fleet.trip.cost.generate.form.view</field>
+            <field name="model">fleet.trip.cost.generate</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group col="4">
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Xem báo cáo"
+                                name="action_generate_fleet_trip_cost_report"
+                                type="object"
+                                default_focus="1"
+                                class="btn-primary"/>
+                        <button string="Huỷ"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="fleet_trip_cost_generate_act_window" model="ir.actions.act_window">
+            <field name="name">Chi phí vận tải</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fleet.trip.cost.generate</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="fleet_trip_cost_report_tree_view" model="ir.ui.view">
+            <field name="name">fleet.trip.cost.report</field>
+            <field name="model">fleet.trip.cost.report</field>
+            <field name="arch" type="xml">
+                <tree string="Bảng chí phí vận tải" create="0">
+                    <field name="schedule_date"/>
+                    <field name="equipment_id"/>
+                    <field name="source"/>
+                    <field name="amount"/>
+                    <field name="note"/>
+                    <field name="create_uid" string="Người tạo"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- <menuitem id='menu_fleet_trip_cost_generate'
+                  name="Bảng chi phí vận tải"
+                  parent="fleet_trip.fleet_trip_report"
+                  action="fleet_trip_cost_generate_act_window"
+                  sequence="100"/> -->
+    </data>
+</odoo>

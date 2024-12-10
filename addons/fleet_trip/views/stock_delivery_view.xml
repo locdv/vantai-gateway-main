@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_delivery_tree_view" model="ir.ui.view">
+        <field name="name">stock.delivery.tree.view</field>
+        <field name="model">stock.delivery</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="project_id"/>
+                <field name="category_id"/>
+                <field name="stock_date"/>
+                <field name="location_dest_id"/>
+                <field name="partner_receive_id"/>
+                <field name="shipping_id"/>
+                <field name="driver_id"/>
+                <field name="equipment_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock_delivery_form_view" model="ir.ui.view">
+        <field name="name">stock.delivery.form.view</field>
+        <field name="model">stock.delivery</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="category_id"/>
+                            <field name="stock_date"/>
+                            <field name="location_dest_id"/>
+                            <field name="partner_receive_id"/>
+                            <field name="partner_receive_phone"/>
+                        </group>
+                        <group>
+                            <field name="shipping_id"/>
+                            <field name="driver_id"/>
+                            <field name="driver_phone"/>
+                            <field name="equipment_id"/>
+                            <field name="code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết xuất kho" name="delivery_line">
+                            <field name="delivery_line" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="product_id" context="{'default_type': 'service'}"/>
+                                    <field name="section"/>
+                                    <field name="product_length"/>
+                                    <field name="uom_id"/>
+                                    <field name="out_qty"/>
+                                    <field name="bao_qty"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="stock_delivery_action" model="ir.actions.act_window">
+        <field name="name">Phiếu xuất kho</field>
+        <field name="res_model">stock.delivery</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="stock_delivery_menu"
+              name="Phiếu xuất kho"
+              parent="fleet_root_menu"
+              action="stock_delivery_action"
+              sequence="20"/> -->
+</odoo>

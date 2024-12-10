@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fleet_trip_approve_form_view" model="ir.ui.view">
+            <field name="name">fleet_trip_approve_form_view</field>
+            <field name="model">fleet.trip.approve.reject</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <label for="fleet_trip_id"
+                               string="Bạn có chắc chắn muốn phê duyệt hành trình này không?"/>
+                    </sheet>
+                    <field name="fleet_trip_id" invisible="1"/>
+                    <footer>
+                        <button string="Đồng ý"
+                                name="action_approve"
+                                type="object"
+                                default_focus="1"
+                                class="btn-primary"/>
+                        <button string="Huỷ"
+                                special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="fleet_trip_reject_form_view" model="ir.ui.view">
+            <field name="name">fleet_trip_reject_form_view</field>
+            <field name="model">fleet.trip.approve.reject</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <label for="fleet_trip_id"
+                               string="Bạn có chắc chắn muốn từ chối hành trình này không?"/>
+                    </sheet>
+                    <field name="fleet_trip_id" invisible="1"/>
+                    <footer>
+                        <button string="Đồng ý"
+                                name="action_reject"
+                                type="object"
+                                default_focus="1"
+                                class="btn-primary"/>
+                        <button string="Huỷ"
+                                special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

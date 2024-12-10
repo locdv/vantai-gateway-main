@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="fleet_product_01" model="fleet.product">
+            <field name="name">Kết cấu</field>
+        </record>
+        <record id="fleet_product_02" model="fleet.product">
+            <field name="name">Xà gồ</field>
+        </record>
+        <record id="fleet_product_03" model="fleet.product">
+            <field name="name">Bu lông</field>
+        </record>
+        <record id="fleet_product_04" model="fleet.product">
+            <field name="name">Bu lông móng</field>
+        </record>
+        <record id="fleet_product_05" model="fleet.product">
+            <field name="name">Tôn lợp</field>
+        </record>
+        <record id="fleet_product_06" model="fleet.product">
+            <field name="name">Tôn cuộn</field>
+        </record>
+        <record id="fleet_product_07" model="fleet.product">
+            <field name="name">Thép tấm</field>
+        </record>
+        <record id="fleet_product_08" model="fleet.product">
+            <field name="name">Phụ kiện tôn</field>
+        </record>
+        <record id="fleet_product_09" model="fleet.product">
+            <field name="name">Thang lên mái</field>
+        </record>
+        <record id="fleet_product_10" model="fleet.product">
+            <field name="name">Máy cán tôn</field>
+        </record>
+        <record id="fleet_product_11" model="fleet.product">
+            <field name="name">Công văn phòng</field>
+        </record>
+        <record id="fleet_product_12" model="fleet.product">
+            <field name="name">Sửa chữa</field>
+        </record>
+        <record id="fleet_product_13" model="fleet.product">
+            <field name="name">Trả hàng</field>
+        </record>
+        <record id="fleet_product_14" model="fleet.product">
+            <field name="name">Xếp hàng</field>
+        </record>
+    </data>
+</odoo>

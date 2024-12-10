@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="fleet_main_report_tree_view" model="ir.ui.view">
+        <field name="name">fleet.main.report.tree.view</field>
+        <field name="model">fleet.main.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="day_time"/>
+                <field name="month_time"/>
+                <field name="year_time"/>
+                <field name="equipment_id"/>
+                <field name="invoice_amount"/>
+                <field name="oil_amount"/>
+                <field name="machine_amount"/>
+                <field name="number_of_oil"/>
+                <field name="bill_content"/>
+                <field name="create_uid" string="Người tạo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_main_report_form_view" model="ir.ui.view">
+        <field name="name">fleet.main.report.form.view</field>
+        <field name="model">fleet.main.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="equipment_id"/>
+                            <field name="create_uid" string="Người tạo"/>
+                        </group>
+                        <group>
+                            <field name="invoice_amount"/>
+                            <field name="oil_amount"/>
+                            <field name="machine_amount"/>
+                            <field name="number_of_oil"/>
+                            <field name="bill_content"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_main_report_search_view" model="ir.ui.view">
+        <field name="name">fleet.main.report.view.search</field>
+        <field name="model">fleet.main.report</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm">
+                <field name="equipment_id"/>
+                <separator/>
+                <filter name="today" string="Hôm nay" separator="1"
+                        domain="[('date','&lt;=', (datetime.date.today()).strftime('%Y-%m-%d')),
+                        ('date','&gt;=',(datetime.date.today()).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tuần này" name="week"
+                        domain="[('date','&lt;=', (context_today() + relativedelta(weeks=0,day=7, weekday=-1)).strftime('%Y-%m-%d')),
+                        ('date','&gt;=',(context_today() - relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tuần trước" name="last_week"
+                        domain="[('date', '&gt;=', ((context_today()+relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d'))),
+                        ('date', '&lt;=', ((context_today()+relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d')))]"/>
+                <filter name="month" string="Tháng này"
+                        domain="['&amp;',('date','&gt;=',(context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),
+                        ('date','&lt;=',(context_today()+relativedelta(months=1,day=1,days=-1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="prev_month" string="Tháng trước"
+                        domain="[('date','&gt;=',(context_today()-relativedelta(months=1)).strftime('%Y-%m-01')),
+                        ('date','&lt;',context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="fleet_main_report_action" model="ir.actions.act_window">
+        <field name="name">Chi phí phát sinh</field>
+        <field name="res_model">fleet.main.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="fleet_main_report_menu"
+              name="Chi phí phát sinh"
+              parent="fleet_trip_report"
+              action="fleet_main_report_action"
+              sequence="5"/> -->
+
+
+    <record id="fleet_grow_report_tree_view" model="ir.ui.view">
+        <field name="name">fleet.grow.report.tree.view</field>
+        <field name="model">fleet.grow.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="month_time"/>
+                <field name="year_time_str"/>
+                <field name="equipment_id"/>
+                <field name="total_amount"/>
+                <field name="partner_id"/>
+                <field name="create_uid" string="Người tạo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fleet_grow_report_form_view" model="ir.ui.view">
+        <field name="name">fleet.grow.report.form.view</field>
+        <field name="model">fleet.grow.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="month_time"/>
+                            <field name="year_time"/>
+                            <field name="equipment_id"/>
+
+                        </group>
+                        <group>
+                            <field name="total_amount"/>
+                            <field name="partner_id"/>
+                            <field name="create_uid" string="Người tạo"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_grow_report_action" model="ir.actions.act_window">
+        <field name="name">Chi phí vận tải</field>
+        <field name="res_model">fleet.grow.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="fleet_grow_report_menu"
+              name="Chi phí vận tải"
+              parent="fleet_trip_report"
+              action="fleet_grow_report_action"
+              sequence="10"/> -->
+
+
+    <record id="advance_money_report_tree_view" model="ir.ui.view">
+        <field name="name">advance.money.report.tree.view</field>
+        <field name="model">advance.money.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="day_time"/>
+                <field name="month_time"/>
+                <field name="year_time"/>
+                <field name="equipment_id"/>
+                <field name="employee_id"/>
+                <field name="total_amount"/>
+                <field name="total_amount_spent"/>
+                <field name="total_amount_remaining"/>
+                <field name="create_uid" string="Người tạo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="advance_money_report_form_view" model="ir.ui.view">
+        <field name="name">advance.money.report.form.view</field>
+        <field name="model">advance.money.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="equipment_id"/>
+                        </group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="total_amount"/>
+                            <field name="total_amount_spent"/>
+                            <field name="total_amount_remaining"/>
+                            <field name="create_uid" string="Người tạo"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="advance_money_report_search_view" model="ir.ui.view">
+        <field name="name">advance.money.report.view.search</field>
+        <field name="model">advance.money.report</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm">
+                <separator/>
+                <filter name="today" string="Hôm nay" separator="1"
+                        domain="[('date','&lt;=', (datetime.date.today()).strftime('%Y-%m-%d')),
+                        ('date','&gt;=',(datetime.date.today()).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tuần này" name="week"
+                        domain="[('date','&lt;=', (context_today() + relativedelta(weeks=0,day=7, weekday=-1)).strftime('%Y-%m-%d')),
+                        ('date','&gt;=',(context_today() - relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tuần trước" name="last_week"
+                        domain="[('date', '&gt;=', ((context_today()+relativedelta(weeks=-2, days=1, weekday=0)).strftime('%Y-%m-%d'))),
+                        ('date', '&lt;=', ((context_today()+relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d')))]"/>
+                <filter name="month" string="Tháng này"
+                        domain="['&amp;',('date','&gt;=',(context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),
+                        ('date','&lt;=',(context_today()+relativedelta(months=1,day=1,days=-1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="prev_month" string="Tháng trước"
+                        domain="[('date','&gt;=',(context_today()-relativedelta(months=1)).strftime('%Y-%m-01')),
+                        ('date','&lt;',context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="advance_money_report_action" model="ir.actions.act_window">
+        <field name="name">Ứng tiền</field>
+        <field name="res_model">advance.money.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="salary_money_report_tree_view" model="ir.ui.view">
+        <field name="name">salary.money.report.tree.view</field>
+        <field name="model">salary.money.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="month_time"/>
+                <field name="year_time_str"/>
+                <field name="equipment_id"/>
+                <field name="total_amount"/>
+                <field name="create_uid" string="Người tạo"/>
+                <field name="create_date" string="Ngày tạo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="salary_money_report_form_view" model="ir.ui.view">
+        <field name="name">salary.money.report.form.view</field>
+        <field name="model">salary.money.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="month_time"/>
+                            <field name="year_time"/>
+                            <field name="create_uid" string="Người tạo"/>
+                        </group>
+                        <group>
+                            <field name="equipment_id"/>
+                            <field name="total_amount"/>
+                            <field name="create_date" string="Ngày tạo"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

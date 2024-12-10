@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <menuitem id="fleet_root_menu"
+                  name="Dự Trù Phương tiện"
+                  sequence="5"
+                  web_icon="fleet_trip,static/description/icon.png"/>
+
+                <!-- <menuitem id="fleet_trip_report"
+                          name="Báo cáo"
+                          parent="fleet_root_menu"
+                          sequence="40"/> -->
+
+                <menuitem id="fleet_config_menu"
+                          name="Cài đặt"
+                          parent="fleet_root_menu"
+                          sequence="50"/>
+
+                <menuitem id="fleet_rank_root_menu"
+                          name="Cấp bậc, chức vụ"
+                          parent="fleet_root_menu"
+                          sequence="60"/>
+
+        <menuitem name="Contacts"
+                id="contacts.menu_contacts"
+                sequence="20"
+                web_icon="contacts,static/description/icon.png"
+                groups="base.group_user,base.group_partner_manager"/>
+
+        <menuitem
+                id="maintenance.menu_maintenance_title"
+                name="Maintenance"
+                web_icon="maintenance,static/description/icon.png"
+                sequence="10"/>
+
+        <menuitem
+                id="hr.menu_hr_root"
+                name="Employees"
+                groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
+                web_icon="hr,static/description/icon.png"
+                sequence="15"/>
+
+        <delete model="ir.ui.menu" id="mail.menu_root_discuss" />
+
+</odoo>
