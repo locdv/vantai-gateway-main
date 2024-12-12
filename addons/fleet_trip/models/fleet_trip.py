@@ -498,7 +498,9 @@ class FleetTrip(models.Model):
         # Access the worksheets
         ws1 = workbook['Sheet1']
         # ws1.cell(row=1, column=1).value = self.license_plate
-        
+        # start phong dao tao
+        ws1.cell(row=3, column=1).value = self.department_plan_id.name.upper()
+        # end phong dao tao
         ws1.cell(row=4, column=1).value = f"Số: {self.fleet_code:02}/DTPT-{self.acronym_department_plan}"
         ws1.merge_cells(start_row=4, start_column=1, end_row=4, end_column=4) 
         ws1.cell(row=4, column=5).value = f"Hà Nội, ngày{now.day:02}tháng{now.month:02}Năm {now.year}"
@@ -592,7 +594,21 @@ class FleetTrip(models.Model):
         # command id 
         ws1.merge_cells(start_row=25, start_column=1, end_row=25, end_column=4) 
         try:
-            ws1.cell(row=25, column=6).value =  (self.department_id.job_with_name or '') 
+            # start nguoi duyet du tru
+            ws1.cell(row=20, column=6).value =  (f"{self.employee_id.job_id.name} {' '.join(self.department_plan_id.name.split()[1:])}".upper() or '') 
+            #chu ky
+            if self.employee_id.sign_image:
+                image_data = base64.b64decode(self.employee_id.sign_image)
+                with open(f'signature{self.employee_id.id}.png', 'wb') as f:
+                    f.write(image_data)
+                img = Image(f'signature{self.employee_id.id}.png')
+                # Convert the size to pixels
+                img.width = 125
+                img.height = 105
+                # Insert the image at a specific cell (e.g., B21)
+                ws1.add_image(img, 'H21')
+            # end nguoi duyet du tru
+            ws1.cell(row=25, column=6).value =  (f"{self.employee_id.rank_id.name} {self.employee_id.name}" or '') 
             ws1.cell(row=25, column=6).alignment = Alignment(horizontal='center')
             
         except:
@@ -600,7 +616,10 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=25, start_column=6, end_row=25, end_column=13)  
 
         try:
-            ws1.cell(row=32, column=3).value = (self.department_id.manager_id.name or '')
+            # có 2 trường hợp văn phòng hoặc hậu cần self.department_id.manager_id.chức vụ, cấp bậc, name
+            # chức vụ
+            ws1.cell(row=27, column=3).value = self.department_id.manager_id.job_id.upper() or ""
+            ws1.cell(row=32, column=3).value = (f"{self.department_id.manager_id.rank_id.name} {self.department_id.manager_id.name}" or '')
             ws1.cell(row=32, column=3).alignment = Alignment(horizontal='center')
             
         except:
