@@ -390,12 +390,15 @@ class FleetTrip(models.Model):
         return act_window
 
     def action_download_command_template(self):
+        # current time
+        now = datetime.now()
         # Load the template
         file_path = get_module_resource('fleet_trip', 'static/src/template', 'COMMAND_TEMPLATE.xlsx')
         workbook = openpyxl.load_workbook(file_path)
 
         # Access the worksheets
         ws1 = workbook['Lệnh']
+        ws1.cell(row=4, column=8).value = f"Hà Nội, ngày {now.day:02} tháng {now.month:02} Năm {now.year}"
         ws1.cell(row=8, column=10).value = f"{self.fleet_code:02 or ''}"
         ws1.cell(row=8, column=13).value = f"{self.acronym_department_plan or ''}"
         ws1.merge_cells(start_row=8, start_column=13, end_row=8, end_column=16)
@@ -500,7 +503,7 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=4, start_column=1, end_row=4, end_column=4) 
         ws1.cell(row=4, column=5).value = f"Hà Nội, ngày{now.day:02}tháng{now.month:02}Năm {now.year}"
         ws1.cell(row=10, column=7).value = (
-            f"Tên phương tiện: {self.category_plan_name.title()}"
+            f"Tên phương tiện: {capitalize_first_letter(self.category_plan_name)}"
             if self.category_plan_name
             else "Tên phương tiện: ……...…………."
         )
@@ -586,7 +589,7 @@ class FleetTrip(models.Model):
                 # ws1['B21'].value = image_data
                 # img = Image(image_data)
                 # img.anchor(ws1['B21'])  # Use the cell reference directly
-
+        # command id 
         ws1.merge_cells(start_row=25, start_column=1, end_row=25, end_column=4) 
         try:
             ws1.cell(row=25, column=6).value =  (self.department_id.job_with_name or '') 
