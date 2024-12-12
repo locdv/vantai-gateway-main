@@ -398,6 +398,8 @@ class FleetTrip(models.Model):
 
         # Access the worksheets
         ws1 = workbook['Lệnh']
+        #update ma lệnh
+        ws1.cell(row=4, column=3).value = f"{self.fleet_command_code:02 or ''}"
         ws1.cell(row=4, column=8).value = f"Hà Nội, ngày {now.day:02} tháng {now.month:02} Năm {now.year}"
         ws1.cell(row=8, column=10).value = f"{self.fleet_code:02 or ''}"
         ws1.cell(row=8, column=13).value = f"{self.acronym_department_plan or ''}"
@@ -446,6 +448,10 @@ class FleetTrip(models.Model):
         ws1.cell(row=17, column=14).value = (
             f" {self.end_date.month:02d}" if (self.end_date) else ""
         )
+        # employee_lead_id
+        if(self.employee_lead_id):
+            ws1.cell(row=19, column=6).value = (self.employee_lead_id.name.title()) or ''
+            ws1.cell(row=19, column=6).value =  {self.job_id.name or ''}"
         ws1.cell(row=29, column=1).value = (
             f" {self.employee_command_id.job_id.name}: {self.employee_command_id.name or ''}" if (self.employee_command_id) else ""
         )
