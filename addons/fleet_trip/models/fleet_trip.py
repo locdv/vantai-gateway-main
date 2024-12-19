@@ -11,6 +11,7 @@ from openpyxl.utils import units
 from odoo.modules.module import get_module_resource
 from openpyxl.styles import Alignment
 from datetime import datetime
+import re
 
 def capitalize_first_letter(s):
     # Kiểm tra nếu chuỗi là False, None hoặc rỗng
@@ -18,6 +19,10 @@ def capitalize_first_letter(s):
         return s
     # Viết hoa chữ cái đầu tiên và giữ nguyên các ký tự còn lại
     return s[0].upper() + s[1:]
+
+def remove_duplicate_adjacent_words(sentence):
+    # This regex will match any word (\\w+) that is followed by the same word (\\1)
+    return re.sub(r'\b(\w+)\s+\1\b', r'\1', sentence)
 
 class FleetTrip(models.Model):
     _name = 'fleet.trip'
@@ -509,7 +514,7 @@ class FleetTrip(models.Model):
         # end phong dao tao
         ws1.cell(row=4, column=1).value = f"Số: {self.fleet_code:02}/DTPT-{self.acronym_department_plan}"
         ws1.merge_cells(start_row=4, start_column=1, end_row=4, end_column=4) 
-        ws1.cell(row=4, column=5).value = f"Hà Nội, ngày{now.day:02}tháng{now.month:02}Năm {now.year}"
+        ws1.cell(row=4, column=5).value = f"Hà Nội, ngày {now.day:02} tháng {now.month:02} Năm {now.year}"
         ws1.cell(row=10, column=7).value = (
             f"Tên phương tiện: {capitalize_first_letter(self.category_plan_name)}"
             if self.category_plan_name
@@ -601,7 +606,9 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=25, start_column=1, end_row=25, end_column=4) 
         try:
             # start nguoi duyet du tru
-            ws1.cell(row=20, column=6).value =  (f"{self.employee_id.job_id.name} {' '.join(self.department_plan_id.name.split()[1:])}".upper() or '') 
+            approve_user = (f"{self.employee_id.job_id.name} {self.department_plan_id.name}".upper() or '')
+            approve_user = remove_duplicate_adjacent_words(approve_user)
+            ws1.cell(row=20, column=6).value =  approve_user
             #chu ky
             if self.employee_id.sign_image:
                 image_data = base64.b64decode(self.employee_id.sign_image)
