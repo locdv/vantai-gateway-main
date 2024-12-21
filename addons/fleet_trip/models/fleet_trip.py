@@ -571,7 +571,7 @@ class FleetTrip(models.Model):
                 + f" {self.location_dest_id.district_id.name or ''}," \
                 + f" {self.location_dest_id.state_id.name or ''}"       
             ws1.merge_cells(start_row=17, start_column=1, end_row=17, end_column=13)    
-        ws1.cell(row=18, column=1).value = f"Dự kiến tổng số km đi, về (giờ hoạt động) {self.time_day_compute * 8} km (giờ)./." 
+        ws1.cell(row=18, column=1).value = f"Dự kiến tổng số km đi, về (giờ hoạt động) {self.distance_plan} km (giờ)./." 
         ws1.merge_cells(start_row=18, start_column=1, end_row=18, end_column=13)  
 
         if self.employee_plan_id:
