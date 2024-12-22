@@ -404,9 +404,9 @@ class FleetTrip(models.Model):
         # Access the worksheets
         ws1 = workbook['Lệnh']
         #update ma lệnh
-        ws1.cell(row=4, column=3).value = f"{self.fleet_command_code:02 or ''}"
+        ws1.cell(row=4, column=3).value = f"{self.fleet_command_code:02}" if self.fleet_command_code else ''
         ws1.cell(row=4, column=8).value = f"Hà Nội, ngày {now.day:02} tháng {now.month:02} Năm {now.year}"
-        ws1.cell(row=8, column=10).value = f"{self.fleet_code:02 or ''}"
+        ws1.cell(row=8, column=10).value = f"{self.fleet_code:02}" if self.fleet_code else ''
         ws1.cell(row=8, column=13).value = f"{self.acronym_department_plan or ''}"
         ws1.merge_cells(start_row=8, start_column=13, end_row=8, end_column=16)
 
