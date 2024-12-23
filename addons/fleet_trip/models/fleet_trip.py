@@ -455,8 +455,8 @@ class FleetTrip(models.Model):
         )
         # employee_lead_id
         if(self.employee_lead_id):
-            ws1.cell(row=19, column=6).value = (self.employee_lead_id.name.title()) or ''
-            ws1.cell(row=19, column=6).value =  {self.job_id.name or ''}"
+            ws1.cell(row=19, column=7).value = self.employee_lead_id.name.title() or ''
+            ws1.cell(row=19, column=14).value = f"{self.rank_id.name or ''} {self.job_id.name or ''}"
         ws1.cell(row=29, column=1).value = (
             f" {self.employee_command_id.job_id.name}: {self.employee_command_id.name or ''}" if (self.employee_command_id) else ""
         )
