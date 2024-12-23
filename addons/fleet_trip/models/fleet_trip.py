@@ -478,7 +478,7 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=29, start_column=1, end_row=29, end_column=7)
         
         try:
-            if self.department_belong_id.manager_id.name:
+            if self.employee_approved_id.name:
                 ws1.cell(row=29, column=10).value = f"{self.employee_approved_id.job_id.name}: {self.employee_approved_id.name or ''}"
                 ws1.cell(row=29, column=10).alignment = Alignment(horizontal='center')
 
