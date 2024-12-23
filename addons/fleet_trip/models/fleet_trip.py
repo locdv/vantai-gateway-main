@@ -410,6 +410,7 @@ class FleetTrip(models.Model):
         ws1.cell(row=8, column=13).value = f"{self.acronym_department_plan or ''}"
         ws1.merge_cells(start_row=8, start_column=13, end_row=8, end_column=16)
 
+        # loại xe
         ws1.cell(row=9, column=5).value = (f"{self.category_plan_name or ''}") 
         ws1.merge_cells(start_row=9, start_column=5, end_row=9, end_column=9)
 
@@ -424,8 +425,17 @@ class FleetTrip(models.Model):
         
         ws1.cell(row=11, column=8).value = (f"{self.license_plate}") if self.license_plate else ''
         ws1.merge_cells(start_row=11, start_column=8, end_row=11, end_column=16)
-        
-        ws1.cell(row=16, column=4).value = f"{self.time_day_compute}" if (self.start_date) else ''
+        # nhiệm vụ
+        ws1.cell(row=12, column=8).value = (
+            {self.description} if self.description
+                else ""
+        )        
+        # số chuyến
+        ws1.cell(row=13, column=14).value = f"{self.number_trips:02d}" if (self.number_trips) else ""
+        # cung đường
+        ws1.cell(row=14, column=6).value = "test"
+        # thời gian
+        ws1.cell(row=16, column=2).value = f"- Thời gian: {self.time_day_compute} ngày;" if (self.start_date) else ''
         ws1.cell(row=16, column=8).value = f"{self.start_date.hour:02d}" if (self.start_date) else ''
         if (self.start_date):
             if self.start_date.minute > 0:
@@ -453,6 +463,7 @@ class FleetTrip(models.Model):
         ws1.cell(row=17, column=14).value = (
             f" {self.end_date.month:02d}" if (self.end_date) else ""
         )
+        # chi huy xe
         # employee_lead_id
         if(self.employee_lead_id):
             ws1.cell(row=19, column=7).value = self.employee_lead_id.name.title() or ''
@@ -460,13 +471,15 @@ class FleetTrip(models.Model):
         ws1.cell(row=29, column=1).value = (
             f" {self.employee_command_id.job_id.name}: {self.employee_command_id.name or ''}" if (self.employee_command_id) else ""
         )
+        # so km di ve
+        ws1.cell(row=21, column=7).value = self.distance_plan
         ws1.cell(row=29, column=1).alignment = Alignment(horizontal='center')
         
         ws1.merge_cells(start_row=29, start_column=1, end_row=29, end_column=7)
         
         try:
             if self.department_belong_id.manager_id.name:
-                ws1.cell(row=29, column=10).value = f"{self.employee_approved_id.job_id.name}: {self.department_belong_id.manager_id.name or ''}"
+                ws1.cell(row=29, column=10).value = f"{self.employee_approved_id.job_id.name}: {self.employee_approved_id.name or ''}"
                 ws1.cell(row=29, column=10).alignment = Alignment(horizontal='center')
 
             else:
@@ -484,7 +497,7 @@ class FleetTrip(models.Model):
 
         # Create an attachment
         attachment = self.env['ir.attachment'].create({
-            'name': f'Lenh_Dieu_Phuong_Tien{self.fleet_command_code:02}.xlsx',
+            'name': f'Lenh_Dieu_Phuong_Tien-{self.fleet_command_code:02}.xlsx',
             'type': 'binary',
             'datas': file_data,
             'res_model': 'fleet.trip',
