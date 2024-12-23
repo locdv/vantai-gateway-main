@@ -655,8 +655,8 @@ class FleetTrip(models.Model):
         try:
             # có 2 trường hợp văn phòng hoặc hậu cần self.department_id.manager_id.chức vụ, cấp bậc, name
             # chức vụ
-            ws1.cell(row=27, column=3).value = self.department_id.manager_id.job_id.upper() or ""
-            ws1.cell(row=32, column=3).value = (f"{self.department_id.manager_id.rank_id.name} {self.department_id.manager_id.name}" or '')
+            ws1.cell(row=27, column=3).value = self.department_belong_id.manager_id.job_id.name.upper() or ""
+            ws1.cell(row=32, column=3).value = (f"{self.department_belong_id.manager_id.rank_id.name} {self.department_belong_id.manager_id.name}" or '')
             ws1.cell(row=32, column=3).alignment = Alignment(horizontal='center')
             
         except:
