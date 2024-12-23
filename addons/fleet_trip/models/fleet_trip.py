@@ -432,8 +432,8 @@ class FleetTrip(models.Model):
         )        
         # số chuyến
         ws1.cell(row=13, column=14).value = f"{self.number_trips:02d}" if (self.number_trips) else ""
-        # cung đường
-        ws1.cell(row=14, column=6).value = "test"
+        # cung đường       
+        ws1.cell(row=14, column=6).value = f'{self.location_id.name} {self.location_dest_id.name}'
         # thời gian
         ws1.cell(row=16, column=2).value = f"- Thời gian: {self.time_day_compute} ngày;" if (self.start_date) else ''
         ws1.cell(row=16, column=8).value = f"{self.start_date.hour:02d}" if (self.start_date) else ''
