@@ -432,8 +432,19 @@ class FleetTrip(models.Model):
         )        
         # số chuyến
         ws1.cell(row=13, column=14).value = f"{self.number_trips:02d}" if (self.number_trips) else ""
-        # cung đường       
-        ws1.cell(row=14, column=6).value = f'{self.location_id.name} {self.location_dest_id.name}'
+        # cung đường    
+        path = ""
+        equipment_location_name = self.equipment_id.location_id.name
+        # Construct the path based on the provided locations
+        if equipment_location_name == self.location_name:
+            path = f"{equipment_location_name}-{self.location_dest_name}-{equipment_location_name}"
+        elif equipment_location_name == self.location_dest_name:
+            path = f"{equipment_location_name}-{self.location_name}-{equipment_location_name}"
+        else:
+            path = f"{equipment_location_name}-{self.location_name},{self.location_dest_name}-{equipment_location_name}"
+        
+        # Write the constructed path to the specified cell
+        ws1.cell(row=14, column=6).value = path
         # thời gian
         ws1.cell(row=16, column=2).value = f"- Thời gian: {self.time_day_compute} ngày;" if (self.start_date) else ''
         ws1.cell(row=16, column=8).value = f"{self.start_date.hour:02d}" if (self.start_date) else ''
@@ -466,20 +477,20 @@ class FleetTrip(models.Model):
         # chi huy xe
         # employee_lead_id
         if(self.employee_lead_id):
-            ws1.cell(row=19, column=7).value = self.employee_lead_id.name.title() or ''
-            ws1.cell(row=19, column=14).value = f"{self.rank_id.name or ''} {self.job_id.name or ''}"
-        ws1.cell(row=29, column=1).value = (
-            f" {self.employee_command_id.job_id.name}: {self.employee_command_id.name or ''}" if (self.employee_command_id) else ""
-        )
+            ws1.cell(row=19, column=7).value = f"{self.rank_id.name or ''} {self.employee_lead_id.name or ''}"
+            ws1.cell(row=19, column=14).value = f"{self.job_id.name or ''}"
         # so km di ve
         ws1.cell(row=21, column=7).value = self.distance_plan
-        ws1.cell(row=29, column=1).alignment = Alignment(horizontal='center')
+        ws1.cell(row=29, column=1).value = (
+            f"{self.employee_command_id.rank_id.name} {self.employee_command_id.name or ''}" if (self.employee_command_id) else ""
+        )
+        ws1.cell(row=29, column=2).alignment = Alignment(horizontal='center')
         
-        ws1.merge_cells(start_row=29, start_column=1, end_row=29, end_column=7)
+        ws1.merge_cells(start_row=29, start_column=2, end_row=29, end_column=7)
         
         try:
             if self.employee_approved_id.name:
-                ws1.cell(row=29, column=10).value = f"{self.employee_approved_id.job_id.name}: {self.employee_approved_id.name or ''}"
+                ws1.cell(row=29, column=10).value = f"{self.employee_approved_id.rank_id.name} {self.employee_approved_id.name or ''}"
                 ws1.cell(row=29, column=10).alignment = Alignment(horizontal='center')
 
             else:
