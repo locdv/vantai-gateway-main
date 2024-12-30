@@ -599,7 +599,7 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=18, start_column=1, end_row=18, end_column=13)  
 
         if self.employee_plan_id:
-            ws1.cell(row=25, column=1).value = (self.employee_plan_id.name or '')
+            ws1.cell(row=25, column=1).value = (f"{self.employee_plan_id.rank_id.name} {self.employee_plan_id.name}" or '') 
             ws1.cell(row=25, column=1).alignment = Alignment(horizontal='center')
 
             if self.employee_plan_id.sign_image:
