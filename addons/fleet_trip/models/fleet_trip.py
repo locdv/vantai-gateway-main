@@ -12,6 +12,7 @@ from odoo.modules.module import get_module_resource
 from openpyxl.styles import Alignment
 from datetime import datetime
 import re
+import pytz
 
 def capitalize_first_letter(s):
     # Kiểm tra nếu chuỗi là False, None hoặc rỗng
@@ -20,6 +21,14 @@ def capitalize_first_letter(s):
     # Viết hoa chữ cái đầu tiên và giữ nguyên các ký tự còn lại
     return s[0].upper() + s[1:]
 
+def convert_local_timezone(utc_time):
+    # Define the UTC time
+    utc_time2 = utc_time.replace(tzinfo=pytz.utc)
+    # Define the local time zone (e.g., 'Asia/Ho_Chi_Minh' for Hanoi)
+    local_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    # Convert UTC time to local time
+    local_time = utc_time2.astimezone(local_tz)
+    return local_time
 def remove_duplicate_adjacent_words(sentence):
     # This regex will match any word (\\w+) that is followed by the same word (\\1)
     return re.sub(r'\b(\w+)\s+\1\b', r'\1', sentence)
@@ -427,7 +436,7 @@ class FleetTrip(models.Model):
         ws1.merge_cells(start_row=11, start_column=8, end_row=11, end_column=16)
         # nhiệm vụ
         ws1.cell(row=12, column=8).value = (
-            {self.description} if self.description
+            f"{self.description}" if self.description
                 else ""
         )        
         # số chuyến
@@ -436,43 +445,46 @@ class FleetTrip(models.Model):
         path = ""
         equipment_location_name = self.equipment_id.location_id.name
         # Construct the path based on the provided locations
-        if equipment_location_name == self.location_name:
-            path = f"{equipment_location_name}-{self.location_dest_name}-{equipment_location_name}"
-        elif equipment_location_name == self.location_dest_name:
-            path = f"{equipment_location_name}-{self.location_name}-{equipment_location_name}"
+        if equipment_location_name == self.location_id.name:
+            path = f"{self.route.name}-{equipment_location_name}"
+        elif equipment_location_name == self.location_dest_id.name:
+            path = f"{equipment_location_name}-{self.route.name}"
         else:
-            path = f"{equipment_location_name}-{self.location_name},{self.location_dest_name}-{equipment_location_name}"
+            path = f"{equipment_location_name}-{self.route.name}-{equipment_location_name}"
         
         # Write the constructed path to the specified cell
         ws1.cell(row=14, column=6).value = path
         # thời gian
+        if (self.start_date):
+            start_local_time = convert_local_timezone(self.start_date)
         ws1.cell(row=16, column=2).value = f"- Thời gian: {self.time_day_compute} ngày;" if (self.start_date) else ''
-        ws1.cell(row=16, column=8).value = f"{self.start_date.hour:02d}" if (self.start_date) else ''
+        ws1.cell(row=16, column=8).value = f"{start_local_time.hour:02d}" if (self.start_date) else ''
         if (self.start_date):
             if self.start_date.minute > 0:
-                ws1.cell(row=16, column=10).value = f"{self.start_date.minute:02d}"
+                ws1.cell(row=16, column=10).value = f"{start_local_time.minute:02d}"
         else:
             ws1.cell(row=16, column=10).value = ''
             
         ws1.cell(row=16, column=12).value = (
-            f" {self.start_date.day:02d}" if (self.start_date) else ""
+            f" {start_local_time.day:02d}" if (self.start_date) else ""
         )
         ws1.cell(row=16, column=14).value = (
-            f" {self.start_date.month:02d}" if (self.start_date) else ""
+            f" {start_local_time.month:02d}" if (self.start_date) else ""
         )
-        
-        ws1.cell(row=17, column=8).value = f"{self.end_date.hour:02d}" if (self.end_date) else ''
+        if (self.end_date):
+            end_local_time = convert_local_timezone(self.end_date)
+        ws1.cell(row=17, column=8).value = f"{end_local_time.hour:02d}" if (self.end_date) else ''
         if (self.end_date):
             if self.end_date.minute > 0:
-                ws1.cell(row=17, column=10).value = f"{self.end_date.minute:02d}"
+                ws1.cell(row=17, column=10).value = f"{end_local_time.minute:02d}"
         else:
             ws1.cell(row=17, column=10).value = ''
             
         ws1.cell(row=17, column=12).value = (
-            f" {self.end_date.day:02d}" if (self.end_date) else ""
+            f" {end_local_time.day:02d}" if (self.end_date) else ""
         )
         ws1.cell(row=17, column=14).value = (
-            f" {self.end_date.month:02d}" if (self.end_date) else ""
+            f" {end_local_time.month:02d}" if (self.end_date) else ""
         )
         # chi huy xe
         # employee_lead_id
@@ -563,21 +575,25 @@ class FleetTrip(models.Model):
         ws1.cell(row=14, column=7).value = f"Số tấn HH: {self.product_weigh} tấn "
 
         if (self.start_date):
-            ws1.cell(row=12, column=5).value = f"Từ: {self.start_date.hour:02d}h "
+            # conver to local timezone
+            start_local_time = convert_local_timezone(self.start_date)
+            ws1.cell(row=12, column=5).value = f"Từ: {start_local_time.hour:02d}h "
             ws1.merge_cells(start_row=12, start_column=5, end_row=12, end_column=6) 
-            if self.start_date.minute > 0:
-                ws1.cell(row=12, column=7).value = f" {self.start_date.minute:02d}"
-            ws1.cell(row=12, column=10).value = f" {self.start_date.day:02d} "
-            ws1.cell(row=12, column=12).value = f" {self.start_date.month:02d} "
-            ws1.cell(row=12, column=13).value = f"năm {self.start_date.year}"
+            if start_local_time.minute > 0:
+                ws1.cell(row=12, column=7).value = f" {start_local_time.minute:02d}"
+            ws1.cell(row=12, column=10).value = f" {start_local_time.day:02d} "
+            ws1.cell(row=12, column=12).value = f" {start_local_time.month:02d} "
+            ws1.cell(row=12, column=13).value = f"năm {start_local_time.year}"
         if (self.end_date):
-            ws1.cell(row=13, column=5).value = f"Đến: {self.end_date.hour:02d}h"
+            # conver to local timezone
+            end_local_time = convert_local_timezone(self.end_date)
+            ws1.cell(row=13, column=5).value = f"Đến: {end_local_time.hour:02d}h"
             ws1.merge_cells(start_row=13, start_column=5, end_row=13, end_column=6) 
-            if self.end_date.minute > 0:
-                ws1.cell(row=13, column=7).value = f" {self.end_date.minute:02d}"
-            ws1.cell(row=13, column=10).value = f" {self.end_date.day:02d}"
-            ws1.cell(row=13, column=12).value = f" {self.end_date.month:02d}"
-            ws1.cell(row=13, column=13).value = f"năm {self.end_date.year}"
+            if end_local_time.minute > 0:
+                ws1.cell(row=13, column=7).value = f" {end_local_time.minute:02d}"
+            ws1.cell(row=13, column=10).value = f" {end_local_time.day:02d}"
+            ws1.cell(row=13, column=12).value = f" {end_local_time.month:02d}"
+            ws1.cell(row=13, column=13).value = f"năm {end_local_time.year}"
         # employee_lead_id
         if(self.employee_lead_id):
             ws1.cell(row=15, column=1).value = f"Chỉ huy xe: Họ tên: {capitalize_first_letter(self.employee_lead_id.name) or ''} " +\
@@ -585,12 +601,14 @@ class FleetTrip(models.Model):
             ws1.merge_cells(start_row=15, start_column=1, end_row=15, end_column=13)       
         if (self.location_id):
             ws1.cell(row=16, column=1).value = f"Địa điểm đón xe: {self.location_id.name or '' }," \
+                + f" {self.location_id.note}," if self.location_id.note  else ""\
                 + f" {self.location_id.ward_id.name or ''}," \
                 + f" {self.location_id.district_id.name or ''}," \
                 + f" {self.location_id.state_id.name or '' },"       
             ws1.merge_cells(start_row=16, start_column=1, end_row=16, end_column=13)     
         if (self.location_dest_id):
             ws1.cell(row=17, column=1).value = f"Nơi đến: {capitalize_first_letter(self.location_dest_id.name) or ''}," \
+                + f" {self.location_dest_id.note}," if self.location_dest_id.note  else ""\
                 + f" {self.location_dest_id.ward_id.name or ''}," \
                 + f" {self.location_dest_id.district_id.name or ''}," \
                 + f" {self.location_dest_id.state_id.name or ''}"       
